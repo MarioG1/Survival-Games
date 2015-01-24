@@ -12,11 +12,9 @@
 	<repositories>
 		<!-- For spigot -->
 		<repository>
-			<id>md5-repo</id>
-			<url>http://repo.md-5.net/content/groups/public/</url>
-			<releases><enabled>true</enabled></releases>
-			<snapshots><enabled>true</enabled></snapshots>
-		</repository>
+                    <id>spigot-repo</id>
+                    <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+                </repository>
 
 		<!-- Addstar repo -->
 		<repository>
@@ -49,22 +47,18 @@
 	
 	<dependencies>
 		<!-- We use Spigot now, not Bukkit -->
-		<dependency>
-			<groupId>org.bukkit</groupId>
-			<artifactId>bukkit</artifactId>
-			<version>1.7.10-R0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.spigotmc</groupId>
-			<artifactId>spigot</artifactId>
-			<version>1.7.10-R0.1-SNAPSHOT</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.spigotmc</groupId>
-					<artifactId>sneaky-throw</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+            <!--Spigot-API-->
+            <dependency>
+                <groupId>org.spigotmc</groupId>
+                <artifactId>spigot-api</artifactId>
+                <version>1.8-R0.1-SNAPSHOT</version>
+            </dependency>
+            <!--Bukkit API-->
+            <dependency>
+                <groupId>org.bukkit</groupId>
+                <artifactId>bukkit</artifactId>
+                <version>1.8-R0.1-SNAPSHOT</version>
+            </dependency>
 
 		<!-- WorldEdit -->
 		<dependency>
