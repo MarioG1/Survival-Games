@@ -41,7 +41,10 @@ public class DeathEvent implements Listener {
 		if (!gm.isPlayerActive(player)) return;
 
 		SurvivalGames.$("Player died: " + player.getName() + " (" + event.getDeathMessage() + ")");
-
+                
+                event.setDeathMessage(null);
+		gm.getGame(gameid).playerDeath(event);
+                
 		// Show alive/dead player lists, for troubleshooting/informational purposes
 		ArrayList <String> alive = new ArrayList <String>();
 		ArrayList <String> dead = new ArrayList <String>();
@@ -55,8 +58,6 @@ public class DeathEvent implements Listener {
 		SurvivalGames.$("Players alive: " + StringUtils.join(alive.toArray(), ", "));
 		SurvivalGames.$("Players dead : " + StringUtils.join(dead.toArray(), ", "));
 		
-		event.setDeathMessage(null);
-		gm.getGame(gameid).playerDeath(event);
 	}
 
 }
