@@ -70,7 +70,7 @@ public class Game {
 	private StatsManager sm = StatsManager.getInstance();
 	private HashMap < String, String > hookvars = new HashMap < String, String > ();
 	private MessageManager msgmgr = MessageManager.getInstance();
-	private GameScoreboard scoreBoard = null;
+	private GameScoreboard scoreBoard = null;        
 
 	public Game(int gameid) {
 		gameID = gameid;
@@ -464,7 +464,7 @@ public class Game {
 				if (entity instanceof Player) continue;
 				entity.remove();
             }
-			startTime = new Date().getTime();
+			startTime = new Date().getTime();                                          
 			for (Player pl: activePlayers) {
 				pl.setHealth(pl.getMaxHealth());
 				msgmgr.sendFMessage(PrefixType.INFO, "game.goodluck", pl);
@@ -920,33 +920,12 @@ public class Game {
 
 		HookManager.getInstance().runHook("PLAYER_SPECTATE", "player-"+p.getName());
 
-		for (Player pl: Bukkit.getOnlinePlayers()) {
-			pl.hidePlayer(p);
-		}
 
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(GameManager.getInstance().getPlugin(), new Runnable() {
-			@SuppressWarnings("deprecation")
 			public void run() {
-				p.setGameMode(org.bukkit.GameMode.CREATIVE);
-				p.setAllowFlight(true);
-				p.setFlying(true);
-				p.setWalkSpeed(0.3F);
-				p.setFlySpeed(0.3F);
-				p.setFireTicks(0);
-
-				Inventory inv = p.getInventory();
-				inv.clear();
-				p.getInventory().setHeldItemSlot(0);
-				inv.setItem(0, SettingsManager.getInstance().getSpecItemNext());
-				inv.setItem(1, SettingsManager.getInstance().getSpecItemPrev());
-				inv.setItem(2, SettingsManager.getInstance().getSpecItemExit());
-				p.getEquipment().setArmorContents(null);
-				p.updateInventory();
+                            
+				p.setGameMode(org.bukkit.GameMode.SPECTATOR);
 				
-				for (PotionEffect effect : p.getActivePotionEffects()) {
-                    p.removePotionEffect(effect.getType());
-				}
-
 				scoreBoard.addScoreboard(p);
 			}
 		}, 10L);
@@ -956,7 +935,6 @@ public class Game {
 		spectators.add(p.getName());
 
 		msgmgr.sendMessage(PrefixType.INFO, "You are now spectating the game!.", p);
-		msgmgr.sendMessage(PrefixType.INFO, "Use the items in your quickbar to control spectating.", p);
 		nextspec.put(p, 0);
 	}
 
@@ -965,29 +943,12 @@ public class Game {
 		players.addAll(activePlayers);
 		players.addAll(inactivePlayers);
 
-		if(p.isOnline()){
-			for (Player pl: Bukkit.getOnlinePlayers()) {
-				pl.showPlayer(p);
-			}
-		}
-		//restoreInv(p);
-		p.setFlying(false);
-		p.setAllowFlight(false);
-		p.setFallDistance(0);
-		p.setHealth(p.getMaxHealth());
-		p.setFoodLevel(20);
-		p.setSaturation(20);
+
 		p.setGameMode(org.bukkit.GameMode.SURVIVAL);
 		scoreBoard.removeScoreboard(p);
-		Inventory inv = p.getInventory();
-		inv.clear();
-		p.getInventory().setHeldItemSlot(0);
-		p.getEquipment().setArmorContents(null);
-		p.updateInventory();
+		
 		p.teleport(SettingsManager.getInstance().getLobbySpawn());
-		p.setGameMode(org.bukkit.GameMode.SURVIVAL);
-		p.setWalkSpeed(0.2F);
-		p.setFlySpeed(0.2F);
+		
 		spectators.remove(p.getName());
 		nextspec.remove(p);
 		msgFall(PrefixType.INFO, "game.spectatorleave", "player-"+p.getDisplayName(), "spectators-"+spectators.size());
